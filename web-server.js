@@ -18,6 +18,10 @@ app.get('/', (req, res) => {
     res.render('../web_server/step1.ejs')
 })
 
+app.get('/callback', (req, res) => {
+    res.redirect('/')
+})
+
 app.get('/2', (req, res) => {
     console.log(req.cookies)
     var newClient = new newUser({
