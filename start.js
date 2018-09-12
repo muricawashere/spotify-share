@@ -119,12 +119,23 @@ client.on('message', msg => {
             if(!client) return msg.reply('looks like you havent set your account up!')
             console.log(err, client)
             spotifyApi.setAccessToken(client.spotifyToken)
-            spotifyApi.search(searchString, ['track'], {limit: 5}).then(data => {
+            spotifyApi.search(searchString, ['track'], {limit: 10}).then(data => {
                 console.log(data.body.tracks.items)
                 var index = 0
                 msg.channel.send(`__**Search Results**__
 ${data.body.tracks.items.map(song => `**${++index}**. **${song.name}** - **${song.album.artists[0].name}**`).join('\n')}
-If you want to play a song respond wiyh your selection`)
+\n
+__If you want to play a song respond with your selection__`)
+                try {
+                    var selection = await msg.channel.awaitMessages(remsg => remsg.content > 0 && remsg < 11, {
+                        maxMatches: 1,
+                        time: 10000,
+                        errors: ['time']
+                    })
+                } catch(err) {
+                    return
+                }
+                console.log(selection)
             }, err => console.error(err))
         })
     }
