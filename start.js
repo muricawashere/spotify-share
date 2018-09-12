@@ -132,10 +132,14 @@ client.on('message', msg => {
                     spotifyApi.getMyCurrentPlaybackState().then(function(playerdat) {
                         console.log(playerdat.body)
                         if(!playerdat.body.device.id) return msg.reply('try changing the device your listening to this on')
-                        spotifyApi.play({
+                        var playopts = {
                             device_id: playerdat.body.device.id,
                             uris: [hoststate.body.item.uri]
-                        }).then(function(data) {
+                        }
+                        if(args[0] == 'begin') {
+                            playopts.position_ms = ''
+                        }
+                        spotifyApi.play(playopts).then(function(data) {
                             msg.reply(`now playing ${playerdat.body.item.name} on your account`)
                         }, function(err) {
                             console.error(err)
