@@ -132,7 +132,7 @@ __If you want to play a song respond with your selection__`)
                         time: 10000,
                         errors: ['time']
                     }).then((res) => {
-                        console.log(res)
+                        console.log(res.content)
                     }).catch(err => console.error)
                 } catch(err) {
                     return
