@@ -133,6 +133,7 @@ __If you want to play a song respond with your selection__`)
                         errors: ['time']
                     }).then((collected) => {
                         var songID = collected.first().content
+                        console.log(songID)
                         playTrack(client.spotifyToken, data.body.tracks.item[songId - 1].uri, msg, 0)
                     }).catch(err => console.error)
                 } catch(err) {
