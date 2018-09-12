@@ -135,9 +135,9 @@ __If you want to play a song respond with your selection__`)
                         var songID = parseInt(collected.first().content)
                         console.log(songID, client.spotifyToken, data.body.tracks.item[songId - 1].uri)
                         playTrack(client.spotifyToken, data.body.tracks.item[songId - 1].uri, msg, 0)
-                    }).catch(err => console.error)
+                    }).catch(err => console.error(err))
                 } catch(err) {
-                    return
+                    console.log(err)
                 }
             }, err => console.error(err))
         })
@@ -189,6 +189,7 @@ __If you want to play a song respond with your selection__`)
 client.login(DISCORD_TOKEN).then(console.log).catch(console.error)
 
 function playTrack(spotifyToken, songURI, msg, location) {
+    console.log('play')
     if(!location) {location = 0}
     spotifyApi.setAccessToken(spotifyToken)
     spotifyApi.getMyCurrentPlaybackState().then(function(playerdat) {
