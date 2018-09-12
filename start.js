@@ -132,8 +132,8 @@ __If you want to play a song respond with your selection__`)
                         time: 10000,
                         errors: ['time']
                     }).then((collected) => {
-                        var songID = collected.first().content
-                        console.log(songID)
+                        var songID = parseInt(collected.first().content)
+                        console.log(songID, client.spotifyToken, data.body.tracks.item[songId - 1].uri)
                         playTrack(client.spotifyToken, data.body.tracks.item[songId - 1].uri, msg, 0)
                     }).catch(err => console.error)
                 } catch(err) {
