@@ -123,7 +123,7 @@ client.on('message', msg => {
                 console.log(data.body.tracks.items)
                 var selectList = ''
                 for(item in data.body.tracks.items) {
-                    selectList += data.body.tracks.items[item].item.name + '\n'
+                    selectList += data.body.tracks.items[item].name + '\n'
                 }
                 msg.channel.send(selectList)
             }, err => console.error(err))
