@@ -113,6 +113,20 @@ client.on('message', msg => {
         })
     }
 
+    if(command == 'play') {
+        var searchString = args.join(' ')
+        if(!searchString) return msg.reply('you didnt search for anything')
+        spotifyClient.findOne({discord_id: msg.author.id}, (err, client) => {
+            if(err) throw err;
+            if(!client) return msg.reply('looks like you havent set your account up!')
+
+            spotifyApi.setAccessToken(client.spotifyToken)
+            spotifyApi.search(searchString, ['track', 'album', 'artist'], {limit: 5}).then(data => {
+                console.log(data.body)
+            }, err => console.error(err))
+        })
+    }
+
     if(command == 'join') {
         var host = msg.guild.member(msg.mentions.users.first()) || msg.guild.members.get(args[0]) || msg.guild.members.get("name", args[0])
         if(!host) return msg.reply('no user found')
