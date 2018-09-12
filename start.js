@@ -121,6 +121,11 @@ client.on('message', msg => {
             spotifyApi.setAccessToken(client.spotifyToken)
             spotifyApi.search(searchString, ['track'], {limit: 5}).then(data => {
                 console.log(data.body.tracks.items)
+                var selectList = ''
+                for(item in data.body.tracks.items) {
+                    selectList += data.body.tracks.items[item].item.name + '\n'
+                }
+                msg.channel.send(selectList)
             }, err => console.error(err))
         })
     }
