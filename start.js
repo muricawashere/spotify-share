@@ -123,7 +123,7 @@ client.on('message', msg => {
                 console.log(data.body.tracks.items)
                 var index = 0
                 msg.channel.send(`__**Search Results**__
-${data.body.tracks.items.map(song => `**${++index}**. **${song.name}** - **${song.album.artists[0].name}`).join('\n')}
+${data.body.tracks.items.map(song => `**${++index}**. **${song.name}** - **${song.album.artists[0].name}**`).join('\n')}
 If you want to play a song respond wiyh your selection`)
             }, err => console.error(err))
         })
