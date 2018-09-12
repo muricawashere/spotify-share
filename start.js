@@ -127,7 +127,7 @@ ${data.body.tracks.items.map(song => `**${++index}**. **${song.name}** - **${son
 \n
 __If you want to play a song respond with your selection__`)
                 try {
-                    var selection = await msg.channel.awaitMessages(remsg => remsg.content > 0 && remsg < 11, {
+                    var selection = msg.channel.awaitMessages(remsg => remsg.content > 0 && remsg < 11, {
                         maxMatches: 1,
                         time: 10000,
                         errors: ['time']
