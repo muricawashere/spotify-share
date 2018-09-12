@@ -132,7 +132,8 @@ __If you want to play a song respond with your selection__`)
                         time: 10000,
                         errors: ['time']
                     }).then((collected) => {
-                        console.log(collected.first().content)
+                        var songID = collected.first().content
+                        playTrack(client.spotifyToken, data.body.tracks.item[songId - 1].uri, msg, 0)
                     }).catch(err => console.error)
                 } catch(err) {
                     return
@@ -185,6 +186,21 @@ __If you want to play a song respond with your selection__`)
 })
 
 client.login(DISCORD_TOKEN).then(console.log).catch(console.error)
+
+function playTrack(spotifyToken, songURI, msg, location) {
+    if(!location) {location = 0}
+    spotifyApi.setAccessToken(spotifyToken)
+    spotifyApi.getMyCurrentPlaybackState().then(function(playerdat) {
+        if(!playerdat.body.device.id) return msg.reply('try changing the device your listening to this on')
+        spotifyApi.play({
+            device_id: playerdat.body.device.id,
+            uris: [songURI],
+            position_ms: location
+        }).then(function(data) {
+            return data
+        }, function(err) {throw err})
+    })
+}
 
 function createURL(theirID) {
     return 'https://accounts.spotify.com/authorize?response_type=token&client_id=' + SPOTIFY_ID + `&state=${theirID}` +('&scope=' + encodeURIComponent(SPOTIFY_SCOPES)) + '&redirect_uri=' + encodeURIComponent('http://206.189.73.140:3000')
