@@ -120,7 +120,7 @@ client.on('message', msg => {
             console.log(err, client)
             spotifyApi.setAccessToken(client.spotifyToken)
             spotifyApi.search(searchString, ['track'], {limit: 10}).then(data => {
-                console.log(data.body.tracks.items)
+                //console.log(data.body.tracks.items)
                 var index = 0
                 msg.channel.send(`__**Search Results**__
 ${data.body.tracks.items.map(song => `**${++index}**. **${song.name}** - **${song.album.artists[0].name}**`).join('\n')}
@@ -140,6 +140,21 @@ __If you want to play a song respond with your selection__`)
                     console.log(err)
                 }
             }, err => console.error(err))
+        })
+    }
+
+    if(command == 'artists') {
+        var searchString = args.join(' ')
+        if(!searchString) return msg.reply('you didnt search for anything')
+        spotifyClient.findOne({discord_id: msg.author.id}, (err, client) => {
+            if(err) throw err;
+            if(!client) return msg.reply('looks like you havent set your account up!')
+            spotifyApi.setAccessToken(client.spotifyToken)
+            spotifyApi.search(searchString, ['artist'], {limit: 10}).then(data => {
+                var index = 0
+                console.log(data.body)
+                msg.channel.send(`__**Search Results**__`)
+            }, err => {console.error(err)})
         })
     }
 
