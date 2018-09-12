@@ -121,11 +121,10 @@ client.on('message', msg => {
             spotifyApi.setAccessToken(client.spotifyToken)
             spotifyApi.search(searchString, ['track'], {limit: 5}).then(data => {
                 console.log(data.body.tracks.items)
-                var selectList = ''
-                for(item in data.body.tracks.items) {
-                    selectList += `${data.body.tracks.items[item].name} by ${data.body.tracks.items[item].album.artists[0].name}'\n'`
-                }
-                msg.channel.send(selectList)
+                var index = 0
+                msg.channel.send(`__**Search Results**__
+${data.body.tracks.items.map(song => `**${++index}**. **${song.name}** - **${song.album.artists[0].name}`).join('\n')}
+If you want to play a song respond wiyh your selection`)
             }, err => console.error(err))
         })
     }
