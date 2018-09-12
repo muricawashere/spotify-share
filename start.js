@@ -113,16 +113,16 @@ client.on('message', msg => {
         })
     }
 
-    if(command == 'play') {
+    if(command == 'search') {
         var searchString = args.join(' ')
         if(!searchString) return msg.reply('you didnt search for anything')
         spotifyClient.findOne({discord_id: msg.author.id}, (err, client) => {
             if(err) throw err;
             if(!client) return msg.reply('looks like you havent set your account up!')
-
+            console.log(err, client)
             spotifyApi.setAccessToken(client.spotifyToken)
-            spotifyApi.search(searchString, ['track', 'album', 'artist'], {limit: 5}).then(data => {
-                console.log(data.body)
+            spotifyApi.search(searchString, 'track', {limit: 5}).then(data => {
+                console.log(data.body.tracks.items)
             }, err => console.error(err))
         })
     }
