@@ -131,8 +131,8 @@ __If you want to play a song respond with your selection__`)
                         maxMatches: 1,
                         time: 10000,
                         errors: ['time']
-                    }).then((res) => {
-                        console.log(res.content)
+                    }).then((collected) => {
+                        console.log(collected.first().content)
                     }).catch(err => console.error)
                 } catch(err) {
                     return
