@@ -3,7 +3,7 @@ var mongoose = require('mongoose')
 var SpotifyWebApi = require('spotify-web-api-node')
 const client = new Discord.Client()
 
-process.stdout.pipe(require('fs').createWriteStream('./start.log'))
+process.stdout.pipe(require('fs').createWriteStream('./start.log', { flags: 'a' }))
 
 var DISCORD_TOKEN = 'NDg4NDQ1OTQ5NTM0OTI4OTA3.DncUkw.WV7iAsuKfrvdcJKLL-bE1ntKN0g'
 var PREFIX = '!'
