@@ -80,7 +80,7 @@ client.on('message', msg => {
     }
 
     if(command == 'mytop') {
-        var amount = args[2]
+        var amount = args[1]
         if(!amount) {
             console.log(amount)
             amount = 10
