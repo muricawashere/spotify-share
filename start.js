@@ -8,7 +8,7 @@ var PREFIX = '!'
 
 var SPOTIFY_ID = 'fb22713c7e084c338ac8ab2476bf2bea'
 var SPOTIFY_SECRET = 'ad795b153d624d9d8af769ae1f760f63'
-var SPOTIFY_SCOPES = 'user-modify-playback-state user-read-currently-playing user-read-private user-read-email user-read-playback-state'
+var SPOTIFY_SCOPES = 'user-top-read user-modify-playback-state user-read-currently-playing user-read-private user-read-email user-read-playback-state'
 
 mongoose.Promise = global.Promise
 mongoose.connect('mongodb://localhost:27017/discord')
@@ -79,6 +79,18 @@ client.on('message', msg => {
         })
     }
 
+    if(command == 'mytop') {
+        spotifyApi.findOne({discord_id: msg.author.id}, (err, client) => {
+            if(err) throw err;
+            if(!client) return msg.reply('looks like you havent set your account up')
+
+            spotifyApi.setAccessToken(client.spotifyToken)
+            spotifyApi.getMyTopTracks().then(function(topArtist) {
+                console.log(topArtist.body)
+            }, function(err) {console.error(err)})
+        })
+    }
+
     if(command == 'me') {
         console.log(msg.author.id)
         spotifyClient.findOne({discord_id: msg.author.id}, (err, client) => {
@@ -99,31 +111,6 @@ client.on('message', msg => {
                     color: 0x2ecc71
                 }})
                 console.log(data.body.item.album.images[0].url)
-            }, function(err) {
-                console.error(err)
-            })
-        })
-    }
-
-    if(command == 'profile') {
-        var profileTag = msg.guild.member(msg.mentions.users.first()) || msg.guild.members.get(args[0]) || msg.guild.members.get("name", args[0])
-        if(!profileTag) return msg.reply('you didnt supply a person')
-        spotifyClient.findOne({discord_id: profileTag.id}, (err, item) => {
-            if(err) throw err;
-            if(!item) return msg.reply('looks like they arent set up yet')
-
-            spotifyApi.setAccessToken(item.spotifyToken)
-            spotifyApi.getMe().then(function(data) {
-                spotifyApi.getMyTopTracks().then(function(topArtist) {
-                    console.log(topArtist.body)
-                }, function(err) {console.error(err)})
-                console.log(data)
-                var name = data.body.display_name || data.body.id
-                var profileURL = data.body.external_urls.spotify
-                msg.channel.send({embed: {
-                    title: `${name}'s Profile`,
-                    url: profileURL
-                }})
             }, function(err) {
                 console.error(err)
             })
