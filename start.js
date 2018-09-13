@@ -92,7 +92,7 @@ client.on('message', msg => {
                 msg.channel.send({embed: {
                     title: data.body.item.name,
                     description: data.body.item.album.artists[0].name,
-                    url: data.body.item.href,
+                    url: data.body.item.external_urls.spotify,
                     thumbnail: {
                         url: data.body.item.album.images[0].url
                     },
@@ -114,7 +114,23 @@ client.on('message', msg => {
             if(!client) return msg.reply('looks like they havent linked there account yet')
             spotifyApi.setAccessToken(client.spotifyToken)
             spotifyApi.getMyCurrentPlaybackState().then(function(data) {
-                msg.reply(`${player.user.username} is listening to ${data.body.item.name} by ${data.body.item.album.artists[0].name}`)
+                var message = msg.channel.send({embed: {
+                    title: data.body.item.name,
+                    description: data.body.item.album.artists[0].name,
+                    url: data.body.item.external_urls.spotify,
+                    thumbnail: {
+                        url: data.body.item.album.images[0].url
+                    },
+                    color: 0x2ecc71
+                }})
+                try {
+                    message.awaitMessages((reaction, user) => reaction.emoji.name === '👎' || reaction.emoji.name === '👍').then(collected => {
+                        console.log(`Collected ${collected.size} reactions`)
+                        console.log(collected.first())
+                    }).catch(console.error)
+                } catch(err) {
+
+                }
             }, function(err) {
                 console.error(err)
             })
