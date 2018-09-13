@@ -114,6 +114,9 @@ client.on('message', msg => {
 
             spotifyApi.setAccessToken(item.spotifyToken)
             spotifyApi.getMe().then(function(data) {
+                spotifyApi.getMyTopArtists().then(function(topArtist) {
+                    console.log(topArtist.body)
+                }, function(err) {console.error(err)})
                 console.log(data)
                 var name = data.body.display_name || data.body.id
                 var profileURL = data.body.external_urls.spotify
