@@ -89,6 +89,11 @@ client.on('message', msg => {
             spotifyApi.getMyCurrentPlaybackState().then(function(data) {
                 console.log(data.body.item.name)
                 msg.reply(`your listening to ${data.body.item.name} by ${data.body.item.album.artists[0].name}`)
+                msg.channel.send({embed: {
+                    title: data.body.item.name,
+                    description: data.body.item.album.artists[0].name,
+                    thumbnail: data.body.item.album.images[0].url
+                }})
             }, function(err) {
                 console.error(err)
             })
