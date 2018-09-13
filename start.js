@@ -94,6 +94,7 @@ client.on('message', msg => {
                     description: data.body.item.album.artists[0].name,
                     thumbnail: data.body.item.album.images[0].url
                 }})
+                console.log(data.body.item.album.images[0].url)
             }, function(err) {
                 console.error(err)
             })
