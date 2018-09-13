@@ -105,9 +105,25 @@ client.on('message', msg => {
         })
     }
 
+    if(command == 'profile') {
+        var profileTag = msg.guild.member(msg.mentions.users.first()) || msg.guild.members.get(args[0]) || msg.guild.members.get("name", args[0])
+        if(!profileTag) return msg.reply('you didnt supply a person')
+        spotifyClient.findOne({discord_id: profileTag.id}, (err, item) => {
+            if(err) throw err;
+            if(!item) return msg.reply('looks like they arent set up yet')
+
+            spotifyApi.setAccessToken(item.spotifyToken)
+            spotifyApi.getMe().then(function(data) {
+                console.log(data)
+            }, function(err) {
+                console.error(err)
+            })
+        })
+    }
+
     if(command == 'state') {
         var player = msg.guild.member(msg.mentions.users.first()) || msg.guild.members.get(args[0]) || msg.guild.members.get("name", args[0])
-        console.log(player)
+        //console.log(player)
         if(!player) return msg.reply('no user found :/')
         spotifyClient.findOne({discord_id: player.id}, (err, client) => {
             if(err) throw err;
@@ -123,17 +139,7 @@ client.on('message', msg => {
                     },
                     color: 0x2ecc71
                 }}).then(message => {
-                    message.react('👍')
-                    message.react('👎')
-                    try {
-                        var filter = (reaction, user) => reaction.emoji.name === '👎' || reaction.emoji.name === '👍'
-                        message.awaitMessages(filter, {time: 60000}).then(collected => {
-                            console.log(`Collected ${collected.size} reactions`)
-                            console.log(collected.first().emoji.name)
-                        }).catch(console.error)
-                    } catch(err) {
-    
-                    }
+
                 })
             }, function(err) {
                 console.error(err)
