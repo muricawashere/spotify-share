@@ -92,7 +92,9 @@ client.on('message', msg => {
                 msg.channel.send({embed: {
                     title: data.body.item.name,
                     description: data.body.item.album.artists[0].name,
-                    thumbnail: data.body.item.album.images[0].url
+                    thumbnail: {
+                        url: data.body.item.album.images[0].url
+                    }
                 }})
                 console.log(data.body.item.album.images[0].url)
             }, function(err) {
