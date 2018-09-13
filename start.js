@@ -81,7 +81,7 @@ client.on('message', msg => {
 
     if(command == 'mytop') {
         var amount = args[1] || 10
-        if(amount<50) amount = 50
+        if(amount>50) amount = 50
         console.log(amount)
         if(!args[0] == 'songs' || !args[0] == 'artists') return msg.reply('choose "songs" or "artists" like ```!mytop songs [10]```')
         spotifyClient.findOne({discord_id: msg.author.id}, (err, client) => {
@@ -90,18 +90,20 @@ client.on('message', msg => {
             spotifyApi.setAccessToken(client.spotifyToken)
             if(args[0] == 'songs') {
                 spotifyApi.getMyTopTracks({limit: amount}).then(function(topArtist) {
-                    console.log(topArtist.body)
+                    console.log(topArtist.body.items[1].artists)
                     var songArray = []
                     for(songNum in topArtist.body.items) {
                         console.log(topArtist.body.items[songNum].name)
-                        msg.channel.send({embed: {
-                            title: 'Hi',
-                            fields: [{
-                                name: '[masked links](http://google.com)',
-                                value: '[masked links](http://google.com)'
-                            }]
-                        }})
+                        songArray.push({
+                            name: `${songNum}. ${topArtist.body.items[songNum].name}`,
+                            value: topArtist.body.items[songNum].name,
+                            inline: true
+                        })
                     }
+                    msg.channel.send({embed: {
+                        title: `${msg.author.username}'s top ${amount}`,
+                        fields: songArray
+                    }})
                 }, function(err) {console.error(err)})
             }
             if(args[0] == 'artists') {
