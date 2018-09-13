@@ -80,16 +80,15 @@ client.on('message', msg => {
     }
 
     if(command == 'mytop') {
-        var amount = args[2]
+        var amount = args[2] || 10
+        console.log(amount)
         if(!args[0] == 'songs' || !args[0] == 'artists') return msg.reply('choose "songs" or "artists" like ```!mytop songs [10]```')
-        if(!args[1]) amount = 10
         spotifyClient.findOne({discord_id: msg.author.id}, (err, client) => {
             if(err) throw err;
             if(!client) return msg.reply('looks like you havent set your account up')
-
             spotifyApi.setAccessToken(client.spotifyToken)
             if(args[0] == 'songs') {
-                spotifyApi.getMyTopTracks().then(function(topArtist) {
+                spotifyApi.getMyTopTracks({limit: amount}).then(function(topArtist) {
                     console.log(topArtist.body)
                     var songArray = []
                     for(songNum in topArtist.body.items) {
