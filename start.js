@@ -1,6 +1,5 @@
 const Discord = require('discord.js')
 var mongoose = require('mongoose')
-var domColor = require('dominant-color')
 var SpotifyWebApi = require('spotify-web-api-node')
 const client = new Discord.Client()
 
@@ -89,19 +88,15 @@ client.on('message', msg => {
             spotifyApi.setAccessToken(client.spotifyToken)
             spotifyApi.getMyCurrentPlaybackState().then(function(data) {
                 console.log(data.body.item.name)
-                msg.reply(`your listening to ${data.body.item.name} by ${data.body.item.album.artists[0].name}`)
-                domColor(data.body.item.album.images[0].url, function(err, color) {
-                    if(err) throw err;
-                    var formatColor = `0x${color}`
-                    msg.channel.send({embed: {
-                        title: data.body.item.name,
-                        description: data.body.item.album.artists[0].name,
-                        thumbnail: {
-                            url: data.body.item.album.images[0].url
-                        },
-                        color: formatColor
-                    }})
-                })
+                //msg.reply(`your listening to ${data.body.item.name} by ${data.body.item.album.artists[0].name}`)
+                msg.channel.send({embed: {
+                    title: data.body.item.name,
+                    description: data.body.item.album.artists[0].name,
+                    thumbnail: {
+                        url: data.body.item.album.images[0].url
+                    },
+                    color: 'GREEN'
+                }})
                 console.log(data.body.item.album.images[0].url)
             }, function(err) {
                 console.error(err)
