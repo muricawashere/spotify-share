@@ -95,7 +95,7 @@ client.on('message', msg => {
                     thumbnail: {
                         url: data.body.item.album.images[0].url
                     },
-                    color: 'GREEN'
+                    color: 0x2ecc71
                 }})
                 console.log(data.body.item.album.images[0].url)
             }, function(err) {
