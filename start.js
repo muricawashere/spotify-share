@@ -152,7 +152,7 @@ __If you want to play a song respond with your selection__`)
             spotifyApi.setAccessToken(client.spotifyToken)
             spotifyApi.search(searchString, ['artist'], {limit: 10}).then(data => {
                 var index = 0
-                console.log(data.body)
+                console.log(data.body.items)
                 msg.channel.send(`__**Search Results**__`)
             }, err => {console.error(err)})
         })
