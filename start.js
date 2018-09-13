@@ -126,7 +126,8 @@ client.on('message', msg => {
                     message.react('👍')
                     message.react('👎')
                     try {
-                        message.awaitMessages((reaction, user) => reaction.emoji.name === '👎' || reaction.emoji.name === '👍').then(collected => {
+                        var filter = (reaction, user) => reaction.emoji.name === '👎' || reaction.emoji.name === '👍'
+                        message.awaitMessages(filter, {time: 60000}).then(collected => {
                             console.log(`Collected ${collected.size} reactions`)
                             console.log(collected.first())
                         }).catch(console.error)
