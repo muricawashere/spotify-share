@@ -115,6 +115,12 @@ client.on('message', msg => {
             spotifyApi.setAccessToken(item.spotifyToken)
             spotifyApi.getMe().then(function(data) {
                 console.log(data)
+                var name = data.body.display_name || data.body.id
+                var profileURL = data.body.external_urls.spotify
+                msg.channel.send({embed: {
+                    title: `${name}'s Profile`,
+                    url: profileURL
+                }})
             }, function(err) {
                 console.error(err)
             })
