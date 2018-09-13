@@ -129,7 +129,7 @@ client.on('message', msg => {
                         var filter = (reaction, user) => reaction.emoji.name === '👎' || reaction.emoji.name === '👍'
                         message.awaitMessages(filter, {time: 60000}).then(collected => {
                             console.log(`Collected ${collected.size} reactions`)
-                            console.log(collected.first())
+                            console.log(collected.first().emoji.name)
                         }).catch(console.error)
                     } catch(err) {
     
