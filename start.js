@@ -80,7 +80,7 @@ client.on('message', msg => {
     }
 
     if(command == 'mytop') {
-        spotifyApi.findOne({discord_id: msg.author.id}, (err, client) => {
+        spotifyClient.findOne({discord_id: msg.author.id}, (err, client) => {
             if(err) throw err;
             if(!client) return msg.reply('looks like you havent set your account up')
 
