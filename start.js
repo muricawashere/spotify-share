@@ -81,7 +81,7 @@ client.on('message', msg => {
 
     if(command == 'mytop') {
         var amount = args[2]
-        if(args[0] !== 'songs' || args[0] !== 'artists') return msg.reply('choose "songs" or "artists" like ```!mytop songs [10]```')
+        if(!args[0] == 'songs' || !args[0] == 'artists') return msg.reply('choose "songs" or "artists" like ```!mytop songs [10]```')
         if(!args[1]) amount = 10
         spotifyClient.findOne({discord_id: msg.author.id}, (err, client) => {
             if(err) throw err;
