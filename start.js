@@ -108,7 +108,7 @@ client.on('message', msg => {
             } else if(args[0] == 'artists') {
                 spotifyApi.getMyTopArtists({limit: amount}).then(function(topArtist) {
                     console.log(topArtist.body.items[0].followers)
-                    var artistArray
+                    var artistArray = []
                     for(artistNum in topArtist.body.items) {
                         artistArray.push({
                             name: `${topArtist.body.items[artistNum].name}`,
