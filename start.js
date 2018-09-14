@@ -138,7 +138,7 @@ client.on('message', msg => {
                 var top0thru24 = []
                 var top25thru50 = []
                 for(songNum in data.body.items) {
-                    console.log(`#${parseInt(songNum)+1}. ${data.body.items[songNum].track.name}`)
+                    //console.log(`#${parseInt(songNum)+1}. ${data.body.items[songNum].track.name}`)
                     if(songNum<25) {
                         top0thru24.push({
                             name: `${parseInt(songNum)+1}. ${data.body.items[songNum].track.name}`,
@@ -158,7 +158,10 @@ client.on('message', msg => {
                     fields: top0thru24
                 }}).then(msg2 => {
                     msg.channel.send({embed: {
-                        fields: top25thru50
+                        fields: top25thru50,
+                        footer: {
+                            text: 'Respond with "Y" to play all songs'
+                        }
                     }})
                 })
             }, err => {console.log(err)})
