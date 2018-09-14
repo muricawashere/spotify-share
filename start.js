@@ -171,10 +171,10 @@ client.on('message', msg => {
                             }).then((collected) => {
                                 var songID = parseInt(collected.first().content)
                                 spotifyApi.getMyCurrentPlaybackState().then(function(playerdata) {
-                                    if(!playerdat.body.device.id) return msg.reply('try changing the device your listening to this on')
+                                    if(!playerdata.body.device.id) return msg.reply('try changing the device your listening to this on')
                                     spotifyApi.play({
                                         context_uri: "spotify:user:spotifycharts:playlist:37i9dQZEVXbMDoHDwVN2tF",
-                                        device_id: playerdat.body.device.id
+                                        device_id: playerdata.body.device.id
                                     }).then(function(data) {
                                         console.log(data)
                                     }, function(err) {console.error(err)})
