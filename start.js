@@ -135,8 +135,10 @@ client.on('message', msg => {
 
             spotifyApi.setAccessToken(client.spotifyToken)
             spotifyApi.getPlaylistTracks('37i9dQZEVXbMDoHDwVN2tF').then(function(data) {
-                console.log(data.body)
-            }, err => {reAuth(client.spotifyToken),msg.reply('try that again')})
+                for(videoNum in data.body.items) {
+                    console.log(data.body.items[videoNum].name)
+                }
+            }, err => {console.log(err)})
         })
     }
 
