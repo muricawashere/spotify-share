@@ -111,7 +111,7 @@ client.on('message', msg => {
                     var artistArray = []
                     for(artistNum in topArtist.body.items) {
                         artistArray.push({
-                            name: `${topArtist.body.items[artistNum].name}`,
+                            name: `${parseInt(artistNum)+1}${topArtist.body.items[artistNum].name}`,
                             value: `Followers: ${topArtist.body.items[artistNum].followers.total}`,
                             inline: false
                         })
