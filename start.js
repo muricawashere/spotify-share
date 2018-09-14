@@ -104,7 +104,7 @@ client.on('message', msg => {
                         description: ' ',
                         fields: songArray
                     }})
-                }, function(err) {console.error(err)})
+                }, function(err) {console.error(err), reAuth(client.spotifyToken), msg.reply('try that again')})
             } else if(args[0] == 'artists') {
                 spotifyApi.getMyTopArtists({limit: amount}).then(function(topArtist) {
                     console.log(topArtist.body.items[0].followers)
@@ -121,7 +121,7 @@ client.on('message', msg => {
                         description: ' ',
                         fields: artistArray
                     }})
-                },function(err) {console.error(err)})
+                },function(err) {console.error(err), reAuth(client.spotifyToken),msg.reply('try that again')})
             } else {
                 msg.reply('you did not supply the right params ```!mytop artist/songs [amount]```')
             }
@@ -134,7 +134,9 @@ client.on('message', msg => {
             if(!client) return msg.reply('looks like you havent set your account up')
 
             spotifyApi.setAccessToken(client.spotifyToken)
-            
+            spotifyApi.getPlaylistTracks('37i9dQZEVXbMDoHDwVN2tF').then(function(data) {
+                console.log(data.body)
+            }, err => {reAuth(client.spotifyToken),msg.reply('try that again')})
         })
     }
 
@@ -160,6 +162,8 @@ client.on('message', msg => {
                 console.log(data.body.item.album.images[0].url)
             }, function(err) {
                 console.error(err)
+                reAuth(client.spotifyToken)
+                msg.reply('try that again')
             })
         })
     }
@@ -186,6 +190,8 @@ client.on('message', msg => {
                 })
             }, function(err) {
                 console.error(err)
+                reAuth(client.spotifyToken)
+                msg.reply('try that again')
             })
         })
     }
@@ -218,7 +224,10 @@ __If you want to play a song respond with your selection__`)
                 } catch(err) {
                     console.log(err)
                 }
-            }, err => console.error(err))
+            }, err => {
+                reAuth(client.spotifyToken)
+                msg.reply('try that again')
+            })
         })
     }
 
@@ -233,7 +242,9 @@ __If you want to play a song respond with your selection__`)
                 var index = 0
                 console.log(data.body.items)
                 msg.channel.send(`__**Search Results**__`)
-            }, err => {console.error(err)})
+            }, err => {
+                reAuth(client.spotifyToken),msg.reply('try that again')
+            })
         })
     }
 
@@ -266,14 +277,14 @@ __If you want to play a song respond with your selection__`)
                         spotifyApi.play(playopts).then(function(data) {
                             msg.reply(`now playing ${playerdat.body.item.name} on your account`)
                         }, function(err) {
-                            console.error(err)
+                            reAuth(client.spotifyToken),msg.reply('try that again')
                         })
                     },function(err) {
-                        console.error(err)
+                        reAuth(client.spotifyToken),msg.reply('try that again')
                     })
                 })
             },function(err) {
-                console.error(err)
+                reAuth(client.spotifyToken),msg.reply('try that again')
             })
         })
     }
@@ -294,7 +305,7 @@ function playTrack(spotifyToken, songURI, msg, location) {
             position_ms: location
         }).then(function(data) {
             return data
-        }, function(err) {throw err})
+        }, function(err) {reAuth(client.spotifyToken),msg.reply('try that again')})
     })
 }
 
@@ -326,4 +337,16 @@ function findClient(people, clientid) {
     } else {
         return people[1]
     }
+}
+
+function reAuth(token) {
+    spotifyApi.setAccessToken(token)
+    spotifyApi.refreshAccessToken().then(function(data) {
+        return
+    }, function(err) {
+        spotifyClient.findOneAndRemove({spotifyToken: token},data => {
+            console.log('removed person')
+            return
+        })
+    })
 }
