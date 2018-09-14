@@ -135,9 +135,32 @@ client.on('message', msg => {
 
             spotifyApi.setAccessToken(client.spotifyToken)
             spotifyApi.getPlaylistTracks('37i9dQZEVXbMDoHDwVN2tF').then(function(data) {
-                for(videoNum in data.body.items) {
-                    console.log(`#${parseInt(videoNum)+1}. ${data.body.items[videoNum].track.name}`)
+                var top0thru24 = []
+                var top25thru50 = []
+                for(songNum in data.body.items) {
+                    console.log(`#${parseInt(songNum)+1}. ${data.body.items[songNum].track.name}`)
+                    if(songNum<24) {
+                        top0thru24.push({
+                            name: `${parseInt(songNum)+1}. ${data.body.items[songNum].track.name}`,
+                            value: `by [${data.body.items[songNum].track.artists[0].name}](${data.body.items[songNum].track.artists[0].external_urls.spotify}`,
+                            inline: false
+                        })
+                    } else {
+                        top25thru50.push({
+                            name: `${parseInt(songNum)+1}. ${data.body.items[songNum].track.name}`,
+                            value: `by [${data.body.items[songNum].track.artists[0].name}](${data.body.items[songNum].track.artists[0].external_urls.spotify}`,
+                            inline: false
+                        })
+                    }
                 }
+                msg.channel.send({embed: {
+                    title: `**Global Top 50**`,
+                    items: top0thru24
+                }}).then(msg2 => {
+                    msg.channel.send({embed: {
+                        items: top25thru50
+                    }})
+                })
             }, err => {console.log(err)})
         })
     }
