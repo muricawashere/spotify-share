@@ -139,16 +139,16 @@ client.on('message', msg => {
                 var top25thru50 = []
                 for(songNum in data.body.items) {
                     console.log(`#${parseInt(songNum)+1}. ${data.body.items[songNum].track.name}`)
-                    if(songNum<24) {
+                    if(songNum<25) {
                         top0thru24.push({
                             name: `${parseInt(songNum)+1}. ${data.body.items[songNum].track.name}`,
-                            value: `by [${data.body.items[songNum].track.artists[0].name}](${data.body.items[songNum].track.artists[0].external_urls.spotify}`,
+                            value: `by [${data.body.items[songNum].track.artists[0].name}](${data.body.items[songNum].track.artists[0].external_urls.spotify})`,
                             inline: false
                         })
                     } else {
                         top25thru50.push({
                             name: `${parseInt(songNum)+1}. ${data.body.items[songNum].track.name}`,
-                            value: `by [${data.body.items[songNum].track.artists[0].name}](${data.body.items[songNum].track.artists[0].external_urls.spotify}`,
+                            value: `by [${data.body.items[songNum].track.artists[0].name}](${data.body.items[songNum].track.artists[0].external_urls.spotify})`,
                             inline: false
                         })
                     }
