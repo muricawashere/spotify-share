@@ -111,7 +111,7 @@ client.on('message', msg => {
                     var artistArray = []
                     for(artistNum in topArtist.body.items) {
                         artistArray.push({
-                            name: `${parseInt(artistNum)+1}${topArtist.body.items[artistNum].name}`,
+                            name: `${parseInt(artistNum)+1}. ${topArtist.body.items[artistNum].name}`,
                             value: `Followers: ${topArtist.body.items[artistNum].followers.total}`,
                             inline: false
                         })
@@ -125,6 +125,16 @@ client.on('message', msg => {
             } else {
                 msg.reply('you did not supply the right params ```!mytop artist/songs [amount]```')
             }
+        })
+    }
+
+    if(command == 'globaltop') {
+        spotifyClient.findOne({discord_id: msg.author.id}, (err, client) => {
+            if(err) throw err;
+            if(!client) return msg.reply('looks like you havent set your account up')
+
+            spotifyApi.setAccessToken(client.spotifyToken)
+            
         })
     }
 
