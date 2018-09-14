@@ -97,12 +97,12 @@ client.on('message', msg => {
                         songArray.push({
                             name: `${parseInt(songNum)+1}. ${topArtist.body.items[songNum].name}`,
                             value: `[${topArtist.body.items[songNum].artists[0].name}](${topArtist.body.items[songNum].artists[0].external_urls.spotify})`,
-                            inline: true
+                            inline: false
                         })
                     }
                     msg.channel.send({embed: {
                         title: `**${msg.author.username}'s top ${amount}**`,
-                        description: '',
+                        description: ' ',
                         fields: songArray
                     }})
                 }, function(err) {console.error(err)})
