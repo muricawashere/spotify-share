@@ -156,13 +156,34 @@ client.on('message', msg => {
                 msg.channel.send({embed: {
                     title: `**Global Top 50**`,
                     fields: top0thru24
-                }}).then(msg2 => {
+                }}).then(nothingtoseehere => {
                     msg.channel.send({embed: {
                         fields: top25thru50,
                         footer: {
                             text: 'Respond with "Y" to play all songs'
                         }
-                    }})
+                    }}).then(msg2 => {
+                        try {
+                            msg2.channel.awaitMessages(remsg => remsg.content == 'Y', {
+                                maxMatches: 1,
+                                time: 10000,
+                                errors: ['time']
+                            }).then((collected) => {
+                                var songID = parseInt(collected.first().content)
+                                spotifyApi.getMyCurrentPlaybackState().then(function(playerdata) {
+                                    if(!playerdat.body.device.id) return msg.reply('try changing the device your listening to this on')
+                                    spotifyApi.play({
+                                        context_uri: "spotify:user:spotifycharts:playlist:37i9dQZEVXbMDoHDwVN2tF",
+                                        device_id: playerdat.body.device.id
+                                    }).then(function(data) {
+                                        console.log(data)
+                                    }, function(err) {console.error(err)})
+                                })
+                            }).catch(err => console.error(err))
+                        } catch(err) {
+                            console.log(err)
+                        }
+                    })
                 })
             }, err => {console.log(err)})
         })
