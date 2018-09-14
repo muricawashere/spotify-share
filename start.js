@@ -100,7 +100,7 @@ client.on('message', msg => {
                         })
                     }
                     msg.channel.send({embed: {
-                        title: `**${msg.author.username}'s top ${amount}**`,
+                        title: `**${msg.author.username}'s top ${amount} songs**`,
                         description: ' ',
                         fields: songArray
                     }})
@@ -108,9 +108,19 @@ client.on('message', msg => {
             } else if(args[0] == 'artists') {
                 spotifyApi.getMyTopArtists({limit: amount}).then(function(topArtist) {
                     console.log(topArtist.body.items[0].followers)
+                    var artistArray
                     for(artistNum in topArtist.body.items) {
-                        ß
+                        artistArray.push({
+                            name: `${topArtist.body.items[artistNum].name}`,
+                            value: `Followers: ${topArtist.body.items[artistNum].followers.total}`,
+                            inline: false
+                        })
                     }
+                    msg.channel.send({embed: {
+                        title: `**${msg.author.username}'s top ${amount} artists**`,
+                        description: ' ',
+                        fields: artistArray
+                    }})
                 },function(err) {console.error(err)})
             } else {
                 msg.reply('you did not supply the right params ```!mytop artist/songs [amount]```')
