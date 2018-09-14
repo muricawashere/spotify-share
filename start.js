@@ -107,7 +107,10 @@ client.on('message', msg => {
                 }, function(err) {console.error(err)})
             } else if(args[0] == 'artists') {
                 spotifyApi.getMyTopArtists({limit: amount}).then(function(topArtist) {
-                    console.log(topArtist.body)
+                    console.log(topArtist.body.items[0].followers)
+                    for(artistNum in topArtist.body.items) {
+                        ß
+                    }
                 },function(err) {console.error(err)})
             } else {
                 msg.reply('you did not supply the right params ```!mytop artist/songs [amount]```')
