@@ -83,7 +83,6 @@ client.on('message', msg => {
         var amount = args[1] || 10
         if(amount>50) amount = 50
         console.log(amount)
-        if(!args[0] == 'songs' || !args[0] == 'artists') return msg.reply('choose "songs" or "artists" like ```!mytop songs [10]```')
         spotifyClient.findOne({discord_id: msg.author.id}, (err, client) => {
             if(err) throw err;
             if(!client) return msg.reply('looks like you havent set your account up')
@@ -96,7 +95,7 @@ client.on('message', msg => {
                         console.log(topArtist.body.items[songNum].name)
                         songArray.push({
                             name: `${parseInt(songNum)+1}. ${topArtist.body.items[songNum].name}`,
-                            value: `[${topArtist.body.items[songNum].artists[0].name}](${topArtist.body.items[songNum].artists[0].external_urls.spotify})`,
+                            value: `by [${topArtist.body.items[songNum].artists[0].name}](${topArtist.body.items[songNum].artists[0].external_urls.spotify})`,
                             inline: false
                         })
                     }
@@ -106,8 +105,12 @@ client.on('message', msg => {
                         fields: songArray
                     }})
                 }, function(err) {console.error(err)})
-            }
-            if(args[0] == 'artists') {
+            } else if(args[0] == 'artists') {
+                spotifyApi.getMyTopArtists({limit: amount}).then(function(topArtist) {
+                    console.log(topArtist.body)
+                },function(err) {console.error(err)})
+            } else {
+                msg.reply('you did not supply the right params ```!mytop artist/songs [amount]```')
             }
         })
     }
