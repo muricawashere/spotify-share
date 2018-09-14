@@ -102,6 +102,7 @@ client.on('message', msg => {
                     }
                     msg.channel.send({embed: {
                         title: `**${msg.author.username}'s top ${amount}**`,
+                        description: '',
                         fields: songArray
                     }})
                 }, function(err) {console.error(err)})
