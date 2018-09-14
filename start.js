@@ -155,10 +155,10 @@ client.on('message', msg => {
                 }
                 msg.channel.send({embed: {
                     title: `**Global Top 50**`,
-                    items: top0thru24
+                    fields: top0thru24
                 }}).then(msg2 => {
                     msg.channel.send({embed: {
-                        items: top25thru50
+                        fields: top25thru50
                     }})
                 })
             }, err => {console.log(err)})
