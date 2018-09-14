@@ -95,7 +95,7 @@ client.on('message', msg => {
                     for(songNum in topArtist.body.items) {
                         console.log(topArtist.body.items[songNum].name)
                         songArray.push({
-                            name: `${songNum++}. ${topArtist.body.items[songNum].name}`,
+                            name: `${songNum+1}. ${topArtist.body.items[songNum].name}`,
                             value: `[${topArtist.body.items[songNum].artists[0].name}](${topArtist.body.items[songNum].artists[0].external_urls.spotify})`,
                             inline: true
                         })
